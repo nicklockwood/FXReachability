@@ -104,6 +104,13 @@ static void ONEReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRe
 
 - (void)dealloc
 {
+
+#if !__has_feature(objc_arc)
+    
+    [super dealloc];
+    
+#endif
+    
     if (_reachability)
     {
         SCNetworkReachabilityUnscheduleFromRunLoop(_reachability, CFRunLoopGetMain(), kCFRunLoopCommonModes);
