@@ -1,6 +1,8 @@
 //
 //  FXReachability.m
 //
+//  Version 1.1
+//
 //  Created by Nick Lockwood on 13/04/2013.
 //  Copyright (c) 2013 Charcoal Design
 //
@@ -88,6 +90,11 @@ static void ONEReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRe
         instance = [[self alloc] init];
     }
     return instance;
+}
+
++ (BOOL)isReachable
+{
+    return [[self sharedInstance] status] != FXReachabilityStatusNotReachable;
 }
 
 - (id)init

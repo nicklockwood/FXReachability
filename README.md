@@ -29,25 +29,47 @@ To use FXReachability, just drag the class files into your project and add the S
 Usage
 -----------------
 
-To use FXReachability, just add an observer for the FXReachabilityStatusDidChangeNotification notification, as follows:
+To use FXReachability, just add an observer for the `FXReachabilityStatusDidChangeNotification` notification, as follows:
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(myUpdateMethod:) name:FXReachabilityStatusDidChangeNotification object:nil];
 
-In your notification handler method, you can then simply use the following code to determine the reachability status:
+In your notification handler method, you can then simply use the following code to determine if the device has a network connection:
+
+    BOOL reachable = [FXReachability isReachable];
+
+Or to find out the exact status, use the following:
     
     FXReachabilityStatus status = [FXReachability sharedInstance].status;
 
 You can also poll this property at any time to determine the current status.
 
 
+Methods
+----------------
+
+The FXReachability class has the following methods  and properties:
+
+    + (instancetype)sharedInstance;
+    
+This returns the singleton shared instance of the FXReachability class. Useful for accessing the `status` property.
+
+    + (BOOL)isReachable;
+
+This method returns YES if the device is reachable, and NO if it isn't. Note that reachability is inherently *optimistic* - a return value of NO means that you definitely can't make a network connection, but a value of YES only means that you *may* be able to (for example, the site you are trying to connect to may be down). For this reason, `+isReachable` will return YES if the status is currently unknown, to prevent spurious errors.
+
+    @property (nonatomic, readonly) FXReachabilityStatus status;
+
+This property returns the current reachabilility status. For obvious reasons, it's read-only. For a list of possible status values, see below.
+
+
 FXReachabilityStatus
 -------------------------
 
-The [FXReachability sharedInstance].status property is a constant which can have one of the following values:
+The `[FXReachability sharedInstance].status` property is a constant which can have one of the following values:
 
     FXReachabilityStatusUnknown
     
-This means that the status is not currently known. This is usually the case prior to the first time that the FXReachabilityStatusDidChangeNotification has fired, but will not usually occur otherwise.
+This means that the status is not currently known. This is usually the case prior to the first time that the `FXReachabilityStatusDidChangeNotification` has fired, but will not usually occur otherwise.
     
     FXReachabilityStatusNotReachable
     
