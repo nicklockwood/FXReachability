@@ -1,7 +1,7 @@
 //
 //  FXReachability.m
 //
-//  Version 1.1
+//  Version 1.1.1
 //
 //  Created by Nick Lockwood on 13/04/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -33,6 +33,10 @@
 #import "FXReachability.h"
 #import <Availability.h>
 
+
+#pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
+
+
 NSString *const FXReachabilityStatusDidChangeNotification = @"FXReachabilityStatusDidChangeNotification";
 NSString *const FXReachabilityNotificationStatusKey = @"status";
 
@@ -47,7 +51,7 @@ NSString *const FXReachabilityNotificationStatusKey = @"status";
 
 @implementation FXReachability
 
-static void ONEReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *info)
+static void ONEReachabilityCallback(__unused SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, __unused void *info)
 {
     FXReachabilityStatus status = FXReachabilityStatusUnknown;
     if ((flags & kSCNetworkReachabilityFlagsReachable) == 0 ||
@@ -94,7 +98,7 @@ static void ONEReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRe
 
 + (BOOL)isReachable
 {
-    return [[self sharedInstance] status] != FXReachabilityStatusNotReachable;
+    return [(FXReachability *)[self sharedInstance] status] != FXReachabilityStatusNotReachable;
 }
 
 - (id)init

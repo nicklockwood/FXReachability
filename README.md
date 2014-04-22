@@ -7,7 +7,7 @@ FXReachability is a lightweight reachability class for Mac and iOS. It is design
 Supported iOS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 6.1 / Mac OS 10.8 (Xcode 4.6, Apple LLVM compiler 4.2)
+* Supported build target - iOS 7.1 / Mac OS 10.9 (Xcode 5.1, Apple LLVM compiler 5.1)
 * Earliest supported deployment target - iOS 5.0 / Mac OS 10.7
 * Earliest compatible deployment target - iOS 4.3 / Mac OS 10.6
 
@@ -59,7 +59,7 @@ This method returns YES if the device is reachable, and NO if it isn't. Note tha
 
     @property (nonatomic, readonly) FXReachabilityStatus status;
 
-This property returns the current reachabilility status. For obvious reasons, it's read-only. For a list of possible status values, see below.
+This property returns the current reachability status. For obvious reasons, it's read-only. For a list of possible status values, see below.
 
 
 FXReachabilityStatus
@@ -82,3 +82,19 @@ This means that the device currently has a mobile data connection (e.g. 3G) and 
     FXReachabilityStatusReachableViaWiFi
     
 This means that the device has either a WiFi or ethernet broadband connection, and can be presumed to have reasonable bandwidth and/or unmetered access. Note that a Mac will report that is has this status even if it is actually sharing a mobile data connection from an iPhone or 3G dongle.
+
+
+Release Notes
+------------------
+
+Version 1.1.1
+
+- Now complies with -Weverything warning level
+
+Version 1.1
+
+- Added `+isReachable` convenience method
+
+Version 1.0
+
+- Initial release

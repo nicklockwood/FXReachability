@@ -1,7 +1,7 @@
 //
 //  FXReachability.h
 //
-//  Version 1.1
+//  Version 1.1.1
 //
 //  Created by Nick Lockwood on 13/04/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -34,18 +34,21 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
+
+
 extern NSString *const FXReachabilityStatusDidChangeNotification;
 extern NSString *const FXReachabilityNotificationStatusKey;
 
 
-typedef enum
+typedef NS_ENUM(NSInteger, FXReachabilityStatus)
 {
     FXReachabilityStatusUnknown  = -1,
     FXReachabilityStatusNotReachable = 0,
     FXReachabilityStatusReachableViaWWAN = 1,
     FXReachabilityStatusReachableViaWiFi = 2,
-}
-FXReachabilityStatus;
+};
 
 
 @interface FXReachability : NSObject
@@ -56,3 +59,6 @@ FXReachabilityStatus;
 + (BOOL)isReachable;
 
 @end
+
+
+#pragma GCC diagnostic pop

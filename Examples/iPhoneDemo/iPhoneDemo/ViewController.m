@@ -12,8 +12,8 @@
 
 @interface ViewController ()
 
-@property (nonatomic, weak) IBOutlet UILabel *currentStatusLabel;
-@property (nonatomic, weak) IBOutlet UITextView *historicStatusView;
+@property (nonatomic, strong) IBOutlet UILabel *currentStatusLabel;
+@property (nonatomic, strong) IBOutlet UITextView *historicStatusView;
 
 @end
 
