@@ -7,7 +7,7 @@ FXReachability is a lightweight reachability class for Mac and iOS. It is design
 Supported iOS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 7.1 / Mac OS 10.9 (Xcode 5.1, Apple LLVM compiler 5.1)
+* Supported build target - iOS 8.0 / Mac OS 10.9 (Xcode 6.0, Apple LLVM compiler 6.0)
 * Earliest supported deployment target - iOS 5.0 / Mac OS 10.7
 * Earliest compatible deployment target - iOS 4.3 / Mac OS 10.6
 
@@ -86,6 +86,10 @@ This means that the device has either a WiFi or ethernet broadband connection, a
 
 Release Notes
 ------------------
+
+Version 1.2
+
+- Added `FXReachabilityNotificationPreviousStatusKey` to the notification's userInfo
 
 Version 1.1.1
 

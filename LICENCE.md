@@ -1,6 +1,6 @@
 FXReachability
 
-Version 1.1.1, April 22nd, 2014
+Version 1.2, September 29th, 2014
 
 Copyright (C) 2013 Charcoal Design
 
