@@ -39,6 +39,7 @@
 
 NSString *const FXReachabilityStatusDidChangeNotification = @"FXReachabilityStatusDidChangeNotification";
 NSString *const FXReachabilityNotificationStatusKey = @"status";
+NSString *const FXReachabilityNotificationPreviousStatusKey = @"previousStatus";
 
 
 @interface FXReachability ()
@@ -76,8 +77,11 @@ static void ONEReachabilityCallback(__unused SCNetworkReachabilityRef target, SC
     
     if (status != [FXReachability sharedInstance].status)
     {
+        FXReachabilityStatus previousStatus = [FXReachability sharedInstance].status;
         [FXReachability sharedInstance].status = status;
-        [[NSNotificationCenter defaultCenter] postNotificationName:FXReachabilityStatusDidChangeNotification object:[FXReachability sharedInstance] userInfo:@{FXReachabilityNotificationStatusKey: @(status)}];
+
+        NSDictionary *userInfo = @{FXReachabilityNotificationStatusKey: @(status), FXReachabilityNotificationPreviousStatusKey: @(previousStatus)};
+        [[NSNotificationCenter defaultCenter] postNotificationName:FXReachabilityStatusDidChangeNotification object:[FXReachability sharedInstance] userInfo:userInfo];
     }
 }
 

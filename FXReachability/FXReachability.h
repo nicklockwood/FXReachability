@@ -40,6 +40,7 @@
 
 extern NSString *const FXReachabilityStatusDidChangeNotification;
 extern NSString *const FXReachabilityNotificationStatusKey;
+extern NSString *const FXReachabilityNotificationPreviousStatusKey;
 
 
 typedef NS_ENUM(NSInteger, FXReachabilityStatus)
