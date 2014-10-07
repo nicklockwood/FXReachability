@@ -39,8 +39,8 @@
 
 
 #import <Availability.h>
-#if !__has_feature(objc_arc) || !__has_feature(objc_arc_weak)
-#error This class requires automatic reference counting and weak references
+#if !__has_feature(objc_arc)
+#error This class requires automatic reference counting
 #endif
 
 
