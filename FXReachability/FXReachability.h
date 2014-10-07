@@ -1,7 +1,7 @@
 //
 //  FXReachability.h
 //
-//  Version 1.2
+//  Version 1.3
 //
 //  Created by Nick Lockwood on 13/04/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -41,6 +41,7 @@
 extern NSString *const FXReachabilityStatusDidChangeNotification;
 extern NSString *const FXReachabilityNotificationStatusKey;
 extern NSString *const FXReachabilityNotificationPreviousStatusKey;
+extern NSString *const FXReachabilityNotificationHostKey;
 
 
 typedef NS_ENUM(NSInteger, FXReachabilityStatus)
@@ -55,9 +56,13 @@ typedef NS_ENUM(NSInteger, FXReachabilityStatus)
 @interface FXReachability : NSObject
 
 @property (nonatomic, readonly) FXReachabilityStatus status;
+@property (nonatomic, copy) NSString *host;
 
 + (instancetype)sharedInstance;
 + (BOOL)isReachable;
+
+- (instancetype)initWithHost:(NSString *)hostDomain;
+- (BOOL)isReachable;
 
 @end
 

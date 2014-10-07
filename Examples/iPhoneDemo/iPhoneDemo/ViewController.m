@@ -46,6 +46,8 @@
 {
     [super viewDidLoad];
     
+    [FXReachability sharedInstance].host = @"google.com";
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateStatus) name:FXReachabilityStatusDidChangeNotification object:nil];
     
     [self updateStatus];

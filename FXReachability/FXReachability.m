@@ -1,7 +1,7 @@
 //
 //  FXReachability.m
 //
-//  Version 1.2
+//  Version 1.3
 //
 //  Created by Nick Lockwood on 13/04/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -35,11 +35,19 @@
 
 
 #pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
+#pragma GCC diagnostic ignored "-Wdirect-ivar-access"
+
+
+#import <Availability.h>
+#if !__has_feature(objc_arc) || !__has_feature(objc_arc_weak)
+#error This class requires automatic reference counting and weak references
+#endif
 
 
 NSString *const FXReachabilityStatusDidChangeNotification = @"FXReachabilityStatusDidChangeNotification";
 NSString *const FXReachabilityNotificationStatusKey = @"status";
 NSString *const FXReachabilityNotificationPreviousStatusKey = @"previousStatus";
+NSString *const FXReachabilityNotificationHostKey = @"host";
 
 
 @interface FXReachability ()
@@ -52,8 +60,9 @@ NSString *const FXReachabilityNotificationPreviousStatusKey = @"previousStatus";
 
 @implementation FXReachability
 
-static void ONEReachabilityCallback(__unused SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, __unused void *info)
+static void ONEReachabilityCallback(__unused SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *info)
 {
+    FXReachability *self = (__bridge id)info;
     FXReachabilityStatus status = FXReachabilityStatusUnknown;
     if ((flags & kSCNetworkReachabilityFlagsReachable) == 0 ||
         (flags & kSCNetworkReachabilityFlagsConnectionRequired) != 0)
@@ -75,13 +84,13 @@ static void ONEReachabilityCallback(__unused SCNetworkReachabilityRef target, SC
         status = FXReachabilityStatusReachableViaWiFi;
     }
     
-    if (status != [FXReachability sharedInstance].status)
+    if (status != self.status)
     {
-        FXReachabilityStatus previousStatus = [FXReachability sharedInstance].status;
-        [FXReachability sharedInstance].status = status;
+        FXReachabilityStatus previousStatus = self.status;
+        self.status = status;
 
-        NSDictionary *userInfo = @{FXReachabilityNotificationStatusKey: @(status), FXReachabilityNotificationPreviousStatusKey: @(previousStatus)};
-        [[NSNotificationCenter defaultCenter] postNotificationName:FXReachabilityStatusDidChangeNotification object:[FXReachability sharedInstance] userInfo:userInfo];
+        NSDictionary *userInfo = @{FXReachabilityNotificationStatusKey: @(status), FXReachabilityNotificationPreviousStatusKey: @(previousStatus), FXReachabilityNotificationHostKey: self.host};
+        [[NSNotificationCenter defaultCenter] postNotificationName:FXReachabilityStatusDidChangeNotification object:self userInfo:userInfo];
     }
 }
 
@@ -93,39 +102,59 @@ static void ONEReachabilityCallback(__unused SCNetworkReachabilityRef target, SC
 + (instancetype)sharedInstance
 {
     static FXReachability *instance;
-    if (!instance)
-    {
-        instance = [[self alloc] init];
-    }
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        instance = [[self alloc] initWithHost:@"apple.com"];
+    });
+    
     return instance;
+}
+
+- (BOOL)isReachable
+{
+    return self.status != FXReachabilityStatusNotReachable;
 }
 
 + (BOOL)isReachable
 {
-    return [(FXReachability *)[self sharedInstance] status] != FXReachabilityStatusNotReachable;
+    return [[self sharedInstance] isReachable];
 }
 
-- (instancetype)init
+- (instancetype)initWithHost:(NSString *)hostDomain
 {
     if ((self = [super init]))
     {
-        _status = FXReachabilityStatusUnknown;
-        _reachability = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, "apple.com");
-        SCNetworkReachabilitySetCallback(_reachability, ONEReachabilityCallback, NULL);
-        SCNetworkReachabilityScheduleWithRunLoop(_reachability, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+        self.host = hostDomain;
     }
     return self;
 }
 
+- (void)setHost:(NSString *)host
+{
+    if (host != _host)
+    {
+        if (_reachability)
+        {
+            SCNetworkReachabilityUnscheduleFromRunLoop(_reachability, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+            CFRelease(_reachability);
+        }
+        _host = [host copy];
+        _status = FXReachabilityStatusUnknown;
+        _reachability = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, [_host UTF8String]);
+        SCNetworkReachabilityContext context = { 0, ( __bridge void *)self, NULL, NULL, NULL };
+        SCNetworkReachabilitySetCallback(_reachability, ONEReachabilityCallback, &context);
+        SCNetworkReachabilityScheduleWithRunLoop(_reachability, CFRunLoopGetMain(), kCFRunLoopCommonModes);
+    }
+}
+
+- (instancetype)init
+{
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
 - (void)dealloc
 {
-
-#if !__has_feature(objc_arc)
-    
-    [super dealloc];
-    
-#endif
-    
     if (_reachability)
     {
         SCNetworkReachabilityUnscheduleFromRunLoop(_reachability, CFRunLoopGetMain(), kCFRunLoopCommonModes);
