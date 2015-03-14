@@ -1,7 +1,7 @@
 //
 //  FXReachability.h
 //
-//  Version 1.3
+//  Version 1.3.1
 //
 //  Created by Nick Lockwood on 13/04/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -61,7 +61,7 @@ typedef NS_ENUM(NSInteger, FXReachabilityStatus)
 + (instancetype)sharedInstance;
 + (BOOL)isReachable;
 
-- (instancetype)initWithHost:(NSString *)hostDomain;
+- (instancetype)initWithHost:(NSString *)hostDomain NS_DESIGNATED_INITIALIZER;
 - (BOOL)isReachable;
 
 @end

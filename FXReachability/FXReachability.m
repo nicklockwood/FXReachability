@@ -1,7 +1,7 @@
 //
 //  FXReachability.m
 //
-//  Version 1.3
+//  Version 1.3.1
 //
 //  Created by Nick Lockwood on 13/04/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -60,7 +60,7 @@ NSString *const FXReachabilityNotificationHostKey = @"host";
 
 @implementation FXReachability
 
-static void ONEReachabilityCallback(__unused SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *info)
+static void FXReachabilityCallback(__unused SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *info)
 {
     FXReachability *self = (__bridge id)info;
     FXReachabilityStatus status = FXReachabilityStatusUnknown;
@@ -104,7 +104,7 @@ static void ONEReachabilityCallback(__unused SCNetworkReachabilityRef target, SC
     static FXReachability *instance;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[self alloc] initWithHost:@"apple.com"];
+        instance = [[self alloc] init];
     });
     
     return instance;
@@ -142,15 +142,14 @@ static void ONEReachabilityCallback(__unused SCNetworkReachabilityRef target, SC
         _status = FXReachabilityStatusUnknown;
         _reachability = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, [_host UTF8String]);
         SCNetworkReachabilityContext context = { 0, ( __bridge void *)self, NULL, NULL, NULL };
-        SCNetworkReachabilitySetCallback(_reachability, ONEReachabilityCallback, &context);
+        SCNetworkReachabilitySetCallback(_reachability, FXReachabilityCallback, &context);
         SCNetworkReachabilityScheduleWithRunLoop(_reachability, CFRunLoopGetMain(), kCFRunLoopCommonModes);
     }
 }
 
 - (instancetype)init
 {
-    [self doesNotRecognizeSelector:_cmd];
-    return nil;
+    return [self initWithHost:@"apple.com"];
 }
 
 - (void)dealloc
