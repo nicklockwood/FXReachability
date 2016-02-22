@@ -1,7 +1,7 @@
 //
 //  FXReachability.m
 //
-//  Version 1.3.1
+//  Version 1.3.2
 //
 //  Created by Nick Lockwood on 13/04/2013.
 //  Copyright (c) 2013 Charcoal Design
@@ -35,6 +35,7 @@
 
 
 #pragma GCC diagnostic ignored "-Wobjc-missing-property-synthesis"
+#pragma GCC diagnostic ignored "-Wgnu-conditional-omitted-operand"
 #pragma GCC diagnostic ignored "-Wdirect-ivar-access"
 
 
@@ -48,6 +49,9 @@ NSString *const FXReachabilityStatusDidChangeNotification = @"FXReachabilityStat
 NSString *const FXReachabilityNotificationStatusKey = @"status";
 NSString *const FXReachabilityNotificationPreviousStatusKey = @"previousStatus";
 NSString *const FXReachabilityNotificationHostKey = @"host";
+
+
+static char * __nonnull const FXDefaultHost = "apple.com";
 
 
 @interface FXReachability ()
@@ -140,7 +144,8 @@ static void FXReachabilityCallback(__unused SCNetworkReachabilityRef target, SCN
         }
         _host = [host copy];
         _status = FXReachabilityStatusUnknown;
-        _reachability = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, [_host UTF8String]);
+        const char * __nonnull hostCString = _host.UTF8String ?: FXDefaultHost;
+        _reachability = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, hostCString);
         SCNetworkReachabilityContext context = { 0, ( __bridge void *)self, NULL, NULL, NULL };
         SCNetworkReachabilitySetCallback(_reachability, FXReachabilityCallback, &context);
         SCNetworkReachabilityScheduleWithRunLoop(_reachability, CFRunLoopGetMain(), kCFRunLoopCommonModes);
@@ -149,7 +154,7 @@ static void FXReachabilityCallback(__unused SCNetworkReachabilityRef target, SCN
 
 - (instancetype)init
 {
-    return [self initWithHost:@"apple.com"];
+    return [self initWithHost:@(FXDefaultHost)];
 }
 
 - (void)dealloc

@@ -67,7 +67,9 @@
 				01D11022175611BC00296350 /* Frameworks */,
 				01D11021175611BC00296350 /* Products */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		01D11021175611BC00296350 /* Products */ = {
 			isa = PBXGroup;
@@ -152,7 +154,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastTestingUpgradeCheck = 0510;
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = "Charcoal Design";
 				TargetAttributes = {
 					01D1101F175611BC00296350 = {
@@ -256,6 +258,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -378,6 +381,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iPhoneDemo/iPhoneDemo-Prefix.pch";
 				INFOPLIST_FILE = "iPhoneDemo/iPhoneDemo-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.charcoaldesign.iPhoneDemo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -392,6 +396,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iPhoneDemo/iPhoneDemo-Prefix.pch";
 				INFOPLIST_FILE = "iPhoneDemo/iPhoneDemo-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.charcoaldesign.iPhoneDemo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;

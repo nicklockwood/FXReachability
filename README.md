@@ -7,8 +7,8 @@ FXReachability is a lightweight reachability class for Mac and iOS. It is design
 Supported iOS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 8.1 / Mac OS 10.10 (Xcode 6.0, Apple LLVM compiler 6.0)
-* Earliest supported deployment target - iOS 5.0 / Mac OS 10.7
+* Supported build target - iOS 9.2 / Mac OS 10.11 (Xcode 7.2, Apple LLVM compiler 7.0)
+* Earliest supported deployment target - iOS 7.0 / Mac OS 10.10
 * Earliest compatible deployment target - iOS 4.3 / Mac OS 10.6
 
 NOTE: 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this iOS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
@@ -115,6 +115,11 @@ This means that the device has either a WiFi or ethernet broadband connection, a
 
 Release Notes
 ------------------
+
+Version 1.3.2
+
+- Added nullability annotations
+- Fixed nullability warning
 
 Version 1.3.1
 
