@@ -98,11 +98,6 @@ static void FXReachabilityCallback(__unused SCNetworkReachabilityRef target, SCN
     }
 }
 
-+ (void)load
-{
-    [self performSelectorOnMainThread:@selector(sharedInstance) withObject:nil waitUntilDone:NO];
-}
-
 + (instancetype)sharedInstance
 {
     static FXReachability *instance;
